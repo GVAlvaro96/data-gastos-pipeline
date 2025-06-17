@@ -1,1 +1,8 @@
 
+pandas 
+numpy 
+matplotlib 
+seaborn 
+jupyter 
+pyyaml
+xlrd
