@@ -1,4 +1,3 @@
-
 pandas 
 numpy 
 matplotlib 
@@ -6,3 +5,5 @@ seaborn
 jupyter 
 pyyaml
 xlrd
+psycopg2-binary
+python-dotenv
