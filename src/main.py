@@ -15,6 +15,8 @@ sys.path.append(str(Path(__file__).parent))
 from etl.load_data import LoadData
 from etl.transform_data import TransformData
 from etl.logger import Logger
+from etl.DB_Gastos import cargar_gastos_desde_dataframe
+from config.database_conector import DatabaseConnector
 
 
 def main():
@@ -51,6 +53,7 @@ def main():
                 
                 # Cargar datos del archivo
                 gastos_2025 = loader.load(str(file_path))
+                
                 
                 # Agregar al DataFrame acumulado
                 loader.agregar_datos_al_dataframe(gastos_2025)

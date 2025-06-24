@@ -2,7 +2,7 @@ import pandas as pd
 from .logger import Logger
 
 class LoadData:
-    def __init__(self,columns,logger=None):
+    def __init__(self,columns=None,logger=None):
         self.logger = logger or Logger()
         self.columns = columns
         self.df = pd.DataFrame([],columns=self.columns)
@@ -11,10 +11,13 @@ class LoadData:
         self.logger.info(f"Cargando archivo: {file_path}")
         if file_path.endswith(('.csv', '.txt')):
             data = pd.read_csv(file_path, sep=',', header=None, skiprows=9)
-            data.columns = self.df.columns
+            if self.columns:
+                data.columns = self.columns
+         
         elif file_path.endswith(('.xlsx', '.xls')):
             data = pd.read_excel(file_path, header=None)
-            data.columns = self.df.columns
+            if self.columns:
+                data.columns = self.columns
         else:
             self.logger.error(f"Formato de archivo no soportado: {file_path}")
             raise ValueError(f"Formato de archivo no soportado: {file_path}")
