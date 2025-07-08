@@ -13,15 +13,15 @@ sys.path.append(str(Path(__file__).parent))
 data_dir = Path("D:\WORKSPACE\data-gastos-pipeline\data")
 # Definir columnas esperadas en los datos
 columns = [
-    'Fecha Operación', 
+    'Fecha_Operacion', 
     'Concepto', 
-    'Fecha Valor', 
+    'Fecha_Valor', 
     'Importe', 
     'Saldo', 
-    'Referencia 1',
-    'Referencia 2'
+    'Referencia_1',
+    'Referencia_2'
 ]
-loader = LoadData(columns)
+loader = LoadData()
 transformer = TransformData()
 
 def cargar_dataframe_a_tabla(df: pd.DataFrame, tabla: str, db: DatabaseConnector) -> bool:
@@ -38,7 +38,7 @@ def cargar_dataframe_a_tabla(df: pd.DataFrame, tabla: str, db: DatabaseConnector
     """
     try:
         # Preparar los datos para inserción
-        columnas = df.columns.tolist()
+        columnas = columns
         placeholders = ', '.join(['%s'] * len(columnas))
         columnas_str = ', '.join(columnas)
         
@@ -95,17 +95,18 @@ try:
                 gastos_2025 = loader.load(str(file_path))
                 # Aplicar transformaciones básicas
                 df_clean = transformer.eliminar_duplicados(gastos_2025)
-                df_clean = transformer.transformar_campos(df_clean, 'Importe', 'float')
-                df_clean = transformer.transformar_campos(df_clean, 'Saldo', 'float')
-                df_clean = transformer.transformar_campos(df_clean, 'Fecha Operación', 'datetime')
-                df_clean = transformer.transformar_campos(df_clean, 'Fecha Valor', 'datetime')
-                df_clean = transformer.transformar_campos(df_clean, 'Referencia 1', 'str')
-                df_clean = transformer.transformar_campos(df_clean, 'Referencia 2', 'str')
+                df_clean = transformer.transformar_campos(df_clean, 0, 'datetime')
+                df_clean = transformer.transformar_campos(df_clean, 1, 'text')
+                df_clean = transformer.transformar_campos(df_clean, 2, 'datetime')
+                df_clean = transformer.transformar_campos(df_clean, 3, 'float')
+                df_clean = transformer.transformar_campos(df_clean, 4, 'float')
+                df_clean = transformer.transformar_campos(df_clean, 5 ,'text')
+                df_clean = transformer.transformar_campos(df_clean, 6 ,'text')
                 df_clean = transformer.eliminar_duplicados(df_clean)
-                df_clean = transformer.limpiar_dataframe_para_carga(df_clean)
+                # df_clean = transformer.limpiar_dataframe_para_carga(df_clean)
                 
                 # Agregar al DataFrame acumulado
-                cargar_dataframe_a_tabla(df_clean, 'gastos_2025', db)
+                # argar_dataframe_a_tabla(df_clean, 'gastos_2025', db)
     
 
 except Exception as e:

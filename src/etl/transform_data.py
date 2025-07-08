@@ -51,15 +51,20 @@ class TransformData:
     def transformar_campos(self, df, campo, tipo):
         self.logger.info(f"Transformando campo '{campo}' a tipo '{tipo}'")
         try:
+           
             if tipo == 'float':
                 # Reemplazar comas de miles y convertir a float
                 df[campo] = df[campo].astype(str).str.replace(',', '', regex=False).astype(float)
             elif tipo == 'datetime':
                 # Usar pd.to_datetime para convertir a fecha
                 df[campo] = pd.to_datetime(df[campo], dayfirst=True, errors='coerce')
+            elif tipo == 'text':
+                # Convertir a texto (string)
+                df[campo] = df[campo].astype(str)
             else:
                 # Conversión estándar para otros tipos
                 df = df.astype({campo: tipo})
+
             
             self.logger.info(f"Campo '{campo}' transformado exitosamente a '{tipo}'")
             return df

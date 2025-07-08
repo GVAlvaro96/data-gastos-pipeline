@@ -23,7 +23,8 @@ class LoadData:
             raise ValueError(f"Formato de archivo no soportado: {file_path}")
         self.logger.info(f"Archivo cargado correctamente: {file_path}")
         return data
-
+    
+ 
     def agregar_datos_al_dataframe(self, data):
         self.logger.info(f"Agregando nuevos datos al DataFrame")
         self.df = pd.concat([self.df, data], ignore_index=True)
